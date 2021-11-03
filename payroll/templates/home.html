@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% for item in all %}
+        {{ item.salaryID }} {{ item.TotalMoney }}<hr>
+    {% endfor %}
+
+
+{% endblock %}

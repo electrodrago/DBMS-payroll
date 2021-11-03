@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div style="text-align: center;">
+    <h1> Search for your salary this month</h1>
+    <br/>
+    </div>
+{#    <div class="input-group">#}
+{#      <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"#}
+{#      aria-describedby="search-addon" />#}
+{#      <button type="button" class="btn btn-outline-secondary">Search</button>#}
+{#    </div>#}
+    <form class="d-flex" method="POST" action="{% url 'search' %}">
+    {% csrf_token %}
+      <input type="search" class="form-control rounded" placeholder="Input the salary ID" aria-label="Search"
+      aria-describedby="search-addon" name="searched"/>
+      <button type="submit" class="btn btn-outline-secondary">Search</button>
+    </form>
+    <hr>
+
+        {% if searched %}
+            <div style="text-align: center;">
+                <h1> You searched for the salary ID of {{ searched }}</h1>
+                <hr>
+                <h3>{{ empName.name }} has the salary ID: {{ searched }}
+                and get
+                {% for s in totalSalary %}
+                    {{ s.TotalMoney }}
+                {% endfor %}
+                 $ this month.</h3>
+                <br/>
+            </div>
+            <br><br>
+            <h4>
+            The base salary for this employee's job is: {{ baseSalary.base_salary }}
+            </h4>
+            <br><br>
+            {% if overload %}
+                <h4>Overload payments get:</h4>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Amount Of Money</th>
+                      <th scope="col">Reason</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+
+                    {% for o in overload %}
+                    <tr>
+                      <td>{{ o.AmountOfMoney }}$</td>
+                      <td>{{ o.Reason }}</td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+
+                </table>
+            {% endif %}
+            <br><br>
+            {% if deduction %}
+                <h4>Deduction fines get:</h4>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Amount Of Money</th>
+                      <th scope="col">Reason</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+
+                    {% for d in deduction %}
+                    <tr>
+                      <td>{{ d.AmountOfMoney }}$</td>
+                      <td>{{ d.Reason }}</td>
+                    </tr>
+                    {% endfor %}
+
+                  </tbody>
+                </table>
+            {% endif %}
+
+
+        {% else %}
+            <div style="text-align: center;">
+                <h1>No salary ID</h1>
+            </div>
+        {% endif %}
+
+
+
+{% endblock %}
